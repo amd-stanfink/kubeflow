@@ -17,6 +17,8 @@ IMAGE_FOLDERS ?= \
 	jupyter-tensorflow-cuda-full \
 	rstudio \
 	rstudio-tidyverse \
+	jupyter-rocm \
+	jupyter-pytorch-rocm \
 
 # ------------------------------------------------------------------------------
 #  docker-build | build all images
