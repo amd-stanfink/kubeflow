@@ -23,3 +23,5 @@ spec:
               memory: "0.1Gi"
       volumes: []
       tolerations: []
+      securityContext:
+        supplementalGroups: []

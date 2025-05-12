@@ -146,3 +146,34 @@ def notebook_dict_from_k8s_obj(notebook):
         "status": status.process_status(notebook),
         "metadata": notebook["metadata"],
     }
+
+
+def read_gpus_config(gpus):
+    if "num" not in gpus:
+        raise exceptions.BadRequest("'gpus' must have a 'num' field")
+
+    if gpus["num"] == "none":
+        return
+
+    if "vendor" not in gpus:
+        raise exceptions.BadRequest("'gpus' must have a 'vendor' field")
+
+    vendor = gpus["vendor"]
+    try:
+        num = int(gpus["num"])
+    except ValueError:
+        raise exceptions.BadRequest("gpus.num is not a valid number: %s" % gpus["num"])
+
+    return num, vendor
+
+
+def get_render_group_id():
+    value = os.environ.get("RENDER_GID", None)
+    if value is None:
+        return None
+
+    try:
+        return int(value)
+    except ValueError as e:
+        log.warn("Failed to convert RENDER_GID value to int: %s", e)
+        return None

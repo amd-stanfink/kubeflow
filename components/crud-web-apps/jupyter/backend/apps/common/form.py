@@ -225,27 +225,12 @@ def set_notebook_affinity(notebook, body, defaults):
 
 def set_notebook_gpus(notebook, body, defaults):
     gpus = get_form_value(body, defaults, "gpus")
-
-    # Make sure the GPUs value is properly formatted
-    if "num" not in gpus:
-        raise BadRequest("'gpus' must have a 'num' field")
-
-    if gpus["num"] == "none":
-        return
-
-    if "vendor" not in gpus:
-        raise BadRequest("'gpus' must have a 'vendor' field")
+    num, vendor = utils.read_gpus_config(gpus)
 
     # set the gpus annotation
     container = notebook["spec"]["template"]["spec"]["containers"][0]
-    vendor = gpus["vendor"]
-    try:
-        num = str(gpus["num"])
-    except ValueError:
-        raise BadRequest("gpus.num is not a valid number: %s" % gpus["num"])
-
     limits = container["resources"].get("limits", {})
-    limits[vendor] = num
+    limits[vendor] = str(num)
 
     container["resources"]["limits"] = limits
 
@@ -297,3 +282,31 @@ def add_notebook_volume(notebook, vol_name, claim, mnt_path):
     # Container Mounts
     mnt = {"mountPath": mnt_path, "name": vol_name}
     container["volumeMounts"].append(mnt)
+
+def set_security_context(notebook, body, defaults):
+    """
+    Set security context for the notebook pod.
+    If AMD GPUs are used, add the 'render' group ID to supplementalGroups.
+    """
+    # Get GPU configuration
+    gpus = get_form_value(body, defaults, "gpus")
+    num, vendor = utils.read_gpus_config(gpus)
+
+    if num >= 1 and vendor == "amd.com/gpu":
+        # Standard render group ID on Linux for GPU access. It has to be supplied because it can have different IDs.
+        render_gid = utils.get_render_group_id()
+
+        # Get existing supplementalGroups
+        security_context = notebook["spec"]["template"]["spec"]["securityContext"]
+        supplemental_groups = security_context.get("supplementalGroups", [])
+
+        # Add render group if not already present
+        if render_gid is not None:
+            if render_gid not in supplemental_groups:
+                log.info("Adding RENDER_GID: '%s' for AMD GPU access", render_gid)
+                supplemental_groups.append(render_gid)
+                security_context["supplementalGroups"] = supplemental_groups
+            else:
+                log.info("RENDER_GID: '%s' already presents in supplementalGroups", render_gid)
+        else:
+            log.warning("RENDER_GID is not set in environment variables.")
