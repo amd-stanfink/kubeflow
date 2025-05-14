@@ -7,5 +7,14 @@
     "target": "http://localhost:4200",
     "pathRewrite": { "^/static": "" },
     "secure": false
+  },
+  "/": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "changeOrigin": true,
+    "withCredentials": true,
+    "headers": {
+      "Origin": "http://localhost:8080"
+    }
   }
 }
