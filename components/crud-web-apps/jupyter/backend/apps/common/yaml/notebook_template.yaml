@@ -24,4 +24,7 @@ spec:
       volumes: []
       tolerations: []
       securityContext:
-        supplementalGroups: []
+        privileged: false
+        allowPrivilegeEscalation: false
+        seccompProfile:
+          type: Unconfined
