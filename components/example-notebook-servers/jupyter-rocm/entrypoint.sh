@@ -1,8 +1,8 @@
 #!/bin/bash
 
-getent group render || groupadd --gid $RENDER_GROUP_ID render
+getent group $RENDER_GROUP_ID || groupadd --gid $RENDER_GROUP_ID render_host
 
-usermod -aG render $NB_USER
+usermod -aG render_host $NB_USER
 
 chmod u-s /usr/sbin/groupadd /usr/sbin/usermod /usr/bin/chmod
 
