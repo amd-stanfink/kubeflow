@@ -8,7 +8,7 @@ FROM $BASE_IMG
 USER root
 
 RUN usermod -a -G video $NB_USER
-RUN chmod u+s /usr/sbin/groupadd /usr/sbin/usermod /usr/bin/chmod
+RUN chmod u+s /usr/bin/chgrp
 
 COPY entrypoint.sh /tmp
 RUN chmod 777 /tmp/entrypoint.sh
