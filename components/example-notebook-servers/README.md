@@ -66,6 +66,8 @@ Dockerfile | Container Registry | Notes
 [`./jupyter-tensorflow-full`](./jupyter-tensorflow-full) | [`ghcr.io/kubeflow/kubeflow/notebook-servers/jupyter-tensorflow-full`](https://ghcr.io/kubeflow/kubeflow/notebook-servers/jupyter-tensorflow-full) | JupyterLab + TensorFlow + Common Packages
 [`./jupyter-tensorflow-cuda`](./jupyter-tensorflow-cuda) | [`ghcr.io/kubeflow/kubeflow/notebook-servers/jupyter-tensorflow-cuda`](https://ghcr.io/kubeflow/kubeflow/notebook-servers/jupyter-tensorflow-cuda) | JupyterLab + TensorFlow + CUDA
 [`./jupyter-tensorflow-cuda-full`](./jupyter-tensorflow-cuda-full) | [`ghcr.io/kubeflow/kubeflow/notebook-servers/jupyter-tensorflow-cuda-full`](https://ghcr.io/kubeflow/kubeflow/notebook-servers/jupyter-tensorflow-cuda-full) | JupyterLab + TensorFlow + CUDA + Common Packages
+[`./jupyter-rocm`](./jupyter-rocm) | [`ghcr.io/kubeflow/kubeflow/notebook-servers/jupyter-rocm`](TBD)                      | JupyterLab + ROCm
+[`./jupyter-pytorch-rocm`](./jupyter-pytorch-rocm) | [`ghcr.io/kubeflow/kubeflow/notebook-servers/jupyter-pytorch-rocm`](TBD)  | JupyterLab + PyTorch + ROCm
 
 ## Package Installation
 
